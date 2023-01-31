@@ -1,0 +1,6 @@
+/basic/__pycache__
+/basic/__init__.py
+/migrations/
+/socialnetwork/__pycache__
+db.sqlite3
+/socialnetwork/__init__.py
