@@ -4,16 +4,22 @@ from .models import Publication
 from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+import requests
+
 
 def index(request):
+    # for dates in clear_dates:
+    #     list_dates.append(dates["title"])
     publication_list = Publication.objects.all()
     if not request.user.is_authenticated:
         return render(request, 'basic/error.html')
     else:
         return render(request, "basic/index.html", {
-            "users_list": publication_list
+            "users_list": publication_list,
+            "user": request.user
         })
 
 # class IndexListView(generic.ListView):
@@ -60,16 +66,44 @@ def response_login(request):
         login(request, user)
         return redirect("/home/")
     else:
-        #return redirect("/home/error-401")
-        return HttpResponse(status=401)
+        return redirect("/home/error-401")
+        #return HttpResponse(status=401)
 
 
 def profile(request):
-    if not request.user.is_authenticated:
-        return HttpResponse("incorrecto")
-    #u = get_object_or_404(User, pk=user_id)
-    return render(request, "basic/profile.html", {
-        "user": request.user
+     if not request.user.is_authenticated:
+         return HttpResponse("incorrecto")
+     #u = get_object_or_404(User, pk=user_id)
+     return render(request, "basic/profile.html", {
+         "user": request.user
+     })
+
+def create_publication(request):
+    title = request.POST["title"]
+    description = request.POST["description"]
+    time_create = timezone.now()
+    id_user = request.user.id
+    a = User.objects.get(pk=id_user)
+    pub = a.publication_set.create(title=title, description=description, time_create=time_create)
+    pub.save()
+    return redirect("/home/")
+
+
+def user_profile(request, id_user):
+    user_dates_profile = get_object_or_404(User, pk=id_user)
+    #user_dates_profie = User.objects.get(pk=id_user)
+    return render(request, "basic/other_profile.html", {
+        "user_dates": user_dates_profile
     })
 
+def logout_user(request):
+    logout(request)
+    return redirect("/home/")
 
+
+def response_button_follow(request, other_user):
+    id_user = request.user.id
+    id_other_user = other_user
+    print(id_user)
+    print(id_other_user)
+    return HttpResponse("hola")

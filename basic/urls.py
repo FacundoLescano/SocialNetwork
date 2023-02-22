@@ -12,5 +12,9 @@ urlpatterns = [
     path("profile/", views.profile, name="profile"),
     path("error-401/", views.error_401, name="error"),
     path("login/", views.user_login, name="login"),
-    path("response-login/", views.response_login, name="response-login")
+    path("response-login/", views.response_login, name="response-login"),
+    path("create-publication/", views.create_publication, name="create_publication"),
+    path("user-profile/<int:id_user>", views.user_profile, name="user_profile"),
+    path("user-logout/", views.logout_user, name="user_logout"),
+    path("response-follow/<int:other_user>", views.response_button_follow, name="response-follow")
 ]
