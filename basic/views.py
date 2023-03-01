@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Publication
+from .models import Publication, Friend
 from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.contrib.auth.models import User
@@ -91,9 +91,11 @@ def create_publication(request):
 
 def user_profile(request, id_user):
     user_dates_profile = get_object_or_404(User, pk=id_user)
+    dates_friends = user_dates_profile.friend_set.all()
     #user_dates_profie = User.objects.get(pk=id_user)
     return render(request, "basic/other_profile.html", {
-        "user_dates": user_dates_profile
+        "user_dates": user_dates_profile,
+        "list_users_friend": dates_friends
     })
 
 def logout_user(request):
@@ -104,6 +106,7 @@ def logout_user(request):
 def response_button_follow(request, other_user):
     id_user = request.user.id
     id_other_user = other_user
-    print(id_user)
-    print(id_other_user)
-    return HttpResponse("hola")
+    user_principal = get_object_or_404(User, pk=id_other_user)
+    user_principal.friend_set.create(id_friend=id_user, username_friend=request.user.username)
+
+    return HttpResponse("correcto")

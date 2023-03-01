@@ -73,6 +73,13 @@
         </div>
         <button><a href="/home/response-follow/{{ user_dates.id}}">Seguir</a></button>
     </div>
+
+    <div>
+      <h3>Amigos: </h3>
+      {% for i in list_users_friend %}
+        <p>{{ i }}</p>
+      {% endfor %}
+    </div>
     
 </body>
 </html>

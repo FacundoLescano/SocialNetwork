@@ -25,8 +25,11 @@ class Publication(models.Model):
 
 
 class Friend(models.Model):
+    # La ForeighKey por la que hacemos referencia.
     id_user_reference = models.ForeignKey(User, on_delete=models.CASCADE)
+    # id del amigo que inicio el follow
     id_friend = models.IntegerField(default=0)
+    # username del amigo que inicio el follow
     username_friend = models.CharField(max_length=100)
 
     def __str__(self):
