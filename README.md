@@ -18,5 +18,3 @@ Routes:
 	/home/response-login = response of authenticate user.
 
 I created this project for apply the knowledge obtained in a course of django.
-
-Of course this project is not finished.
